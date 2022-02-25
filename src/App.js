@@ -18,6 +18,7 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
+        setErrMsg("");
         const {
           data: { items },
         } = await axios.get(

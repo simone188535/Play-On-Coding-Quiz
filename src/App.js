@@ -64,27 +64,30 @@ function App() {
     }));
   };
 
-  const diplayErrorMsgOrTableData = (errMsg) ? <div className="err-msg">{errMsg}</div> : (
+  const diplayErrorMsgOrTableData = errMsg ? (
+    <div className="err-msg">{errMsg}</div>
+  ) : events.length === 0 ? (
+    <div>No results found.</div>
+  ) : (
     <table className="table">
-        <thead className="table-head">
-          <tr className="table-row">
-            <th>Key</th>
-            <th>Headline</th>
-            <th>Sub-Headline</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody className="table-body">{displayTableData}</tbody>
-      </table>
-  )
+      <thead className="table-head">
+        <tr className="table-row">
+          <th>Key</th>
+          <th>Headline</th>
+          <th>Sub-Headline</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody className="table-body">{displayTableData}</tbody>
+    </table>
+  );
 
   // read me file
   return (
     <div className="app">
       <section className="filter-controls">
         <div className="filter-control">
-          <label htmlFor="association-key">State Association Key:</label>
-          {' '}
+          <label htmlFor="association-key">State Association Key:</label>{" "}
           <select
             name="association-key"
             id="association-key"
@@ -96,8 +99,7 @@ function App() {
         </div>
 
         <div className="filter-control">
-          <label htmlFor="start-date-filter">Start Date:</label>
-          {' '}
+          <label htmlFor="start-date-filter">Start Date:</label>{" "}
           <DatePicker
             wrapperClassName="date-picker"
             selected={selectedDate.startDate}
@@ -105,8 +107,7 @@ function App() {
           />
         </div>
         <div className="filter-control">
-          <label htmlFor="end-date-filter">End Date:</label>
-          {' '}
+          <label htmlFor="end-date-filter">End Date:</label>{" "}
           <DatePicker
             wrapperClassName="date-picker"
             selected={selectedDate.endDate}
@@ -114,9 +115,7 @@ function App() {
           />
         </div>
       </section>
-      <section className="results">
-      {diplayErrorMsgOrTableData}
-      </section>
+      <section className="results">{diplayErrorMsgOrTableData}</section>
     </div>
   );
 }

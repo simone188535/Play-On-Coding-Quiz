@@ -1,11 +1,9 @@
-.app {
-  
-}
-
 .app .filter-controls {
   display: flex;
   max-width: 800px;
   margin: auto;
+  height: 60px;
+  align-items: center;
 }
 
 .app .filter-controls .filter-control {
@@ -14,4 +12,14 @@
 
 .app .filter-controls .date-picker {
   width: auto;
+}
+
+.app .results {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.app .results .err-msg{
+  color: darkred;
 }

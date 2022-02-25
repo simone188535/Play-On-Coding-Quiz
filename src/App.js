@@ -35,16 +35,15 @@ function App() {
 
   useEffect(() => {
     // created appended query string when selected dates have been changed
+    let appendedQueryStr = "";
     const startDate = selectedDate.startDate;
     const endDate = selectedDate.endDate;
     const startDateQueryStr = startDate
       ? `&from=${startDate.toISOString()}`
       : "";
     const endDateQueryStr = endDate ? `&to=${endDate.toISOString()}` : "";
-    let appendedQueryStr = "";
-    appendedQueryStr.concat(startDateQueryStr, endDateQueryStr);
 
-    setQueryStr(appendedQueryStr);
+    setQueryStr(appendedQueryStr.concat(startDateQueryStr, endDateQueryStr));
   }, [selectedDate]);
 
   const displayTableData = events.map(
@@ -65,9 +64,21 @@ function App() {
     }));
   };
 
-  // style final product
+  const diplayErrorMsgOrTableData = (errMsg) ? <div className="err-msg">{errMsg}</div> : (
+    <table className="table">
+        <thead className="table-head">
+          <tr className="table-row">
+            <th>Key</th>
+            <th>Headline</th>
+            <th>Sub-Headline</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody className="table-body">{displayTableData}</tbody>
+      </table>
+  )
+
   // read me file
-  // show error msg or table
   return (
     <div className="app">
       <section className="filter-controls">
@@ -103,17 +114,9 @@ function App() {
           />
         </div>
       </section>
-      <table className="table">
-        <thead className="table-head">
-          <tr className="table-row">
-            <th>Key</th>
-            <th>Headline</th>
-            <th>Sub-Headline</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody className="table-body">{displayTableData}</tbody>
-      </table>
+      <section className="results">
+      {diplayErrorMsgOrTableData}
+      </section>
     </div>
   );
 }

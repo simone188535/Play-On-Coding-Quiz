@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 import axios from "axios";
 import moment from "moment";
 import "./App.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [queryStr, setQueryStr] = useState("");
   const [events, setEvents] = useState([]);
   const [errMsg, setErrMsg] = useState("");
   const [associationKey, setAssociationKey] = useState("18bad24aaa");
+  const [selectedDate, setSelectedDate] = useState({
+    startDate: null,
+    endDate: null
+  });
 
   useEffect(() => {
     (async () => {
@@ -15,7 +21,8 @@ function App() {
         const {
           data: { items },
         } = await axios.get(
-          `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=${associationKey}&card=true&size=50&start=0${queryStr}`
+          `https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=${associationKey}&card=true&size=50&start=0${queryStr}`,
+          { headers: { "Content-Type": "application/json" } }
         );
         setEvents(items);
       } catch (err) {
@@ -26,9 +33,18 @@ function App() {
     })();
   }, [associationKey, queryStr]);
 
-  // const appendQueryStr = (query) => {
-  //   setQueryStr(query);
-  // }
+  useEffect(() => {
+    // created appended query string when selected dates have been changed
+    const startDate = selectedDate.startDate;
+    const endDate = selectedDate.endDate;
+    const startDateQueryStr = (startDate) ? `&from=${startDate.toISOString()}` : '';
+    const endDateQueryStr = (endDate) ? `&to=${endDate.toISOString()}` : '';
+    let appendedQueryStr = '';
+    appendedQueryStr.concat(startDateQueryStr, endDateQueryStr);
+
+    setQueryStr(appendedQueryStr);
+  }, [selectedDate])
+
   const displayTableData = events.map(
     ({ key, headline, subheadline, date }) => (
       <tr key={key}>
@@ -40,14 +56,34 @@ function App() {
     )
   );
 
+  const changeSelectedDate = (key, val) => {
+    setSelectedDate(prevState => ({
+      ...prevState,
+      [key]: val
+    }));
+  }
+
+  // correct git ignore
+  // style final product
+  // read me file
+  // show error msg or table
   return (
     <div className="App">
       <section className="filter-container">
         <label htmlFor="association-key">Choose a Association Key:</label>
-        <select name="association-key" id="association-key" onChange={e => setAssociationKey(e.target.value)}>
+        <select
+          name="association-key"
+          id="association-key"
+          onChange={(e) => setAssociationKey(e.target.value)}
+        >
           <option value="18bad24aaa">GHSA</option>
           <option value="542bc38f95">UIL</option>
         </select>
+
+        <label htmlFor="start-date-filter">Start Date:</label>
+        <DatePicker selected={selectedDate.startDate} onChange={(date) => changeSelectedDate('startDate', date)} />
+        <label htmlFor="end-date-filter">End Date:</label>
+        <DatePicker selected={selectedDate.endDate} onChange={(date) => changeSelectedDate('endDate', date)} />
       </section>
       <table className="table">
         <thead className="table-head">

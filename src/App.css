@@ -1,3 +1,17 @@
-.App {
+.app {
   
+}
+
+.app .filter-controls {
+  display: flex;
+  max-width: 800px;
+  margin: auto;
+}
+
+.app .filter-controls .filter-control {
+  flex: 1 1 auto;
+}
+
+.app .filter-controls .date-picker {
+  width: auto;
 }

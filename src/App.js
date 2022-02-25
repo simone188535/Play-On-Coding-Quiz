@@ -12,7 +12,7 @@ function App() {
   const [associationKey, setAssociationKey] = useState("18bad24aaa");
   const [selectedDate, setSelectedDate] = useState({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function App() {
         setEvents(items);
       } catch (err) {
         setErrMsg(
-          "An error occurred while loading the API call! Please try again later!"
+          "An error occurred while loading the API call! Please try again later! This is likely a CORS issue. Please check the console."
         );
       }
     })();
@@ -37,13 +37,15 @@ function App() {
     // created appended query string when selected dates have been changed
     const startDate = selectedDate.startDate;
     const endDate = selectedDate.endDate;
-    const startDateQueryStr = (startDate) ? `&from=${startDate.toISOString()}` : '';
-    const endDateQueryStr = (endDate) ? `&to=${endDate.toISOString()}` : '';
-    let appendedQueryStr = '';
+    const startDateQueryStr = startDate
+      ? `&from=${startDate.toISOString()}`
+      : "";
+    const endDateQueryStr = endDate ? `&to=${endDate.toISOString()}` : "";
+    let appendedQueryStr = "";
     appendedQueryStr.concat(startDateQueryStr, endDateQueryStr);
 
     setQueryStr(appendedQueryStr);
-  }, [selectedDate])
+  }, [selectedDate]);
 
   const displayTableData = events.map(
     ({ key, headline, subheadline, date }) => (
@@ -57,33 +59,49 @@ function App() {
   );
 
   const changeSelectedDate = (key, val) => {
-    setSelectedDate(prevState => ({
+    setSelectedDate((prevState) => ({
       ...prevState,
-      [key]: val
+      [key]: val,
     }));
-  }
+  };
 
-  // correct git ignore
   // style final product
   // read me file
   // show error msg or table
   return (
-    <div className="App">
-      <section className="filter-container">
-        <label htmlFor="association-key">Choose a Association Key:</label>
-        <select
-          name="association-key"
-          id="association-key"
-          onChange={(e) => setAssociationKey(e.target.value)}
-        >
-          <option value="18bad24aaa">GHSA</option>
-          <option value="542bc38f95">UIL</option>
-        </select>
+    <div className="app">
+      <section className="filter-controls">
+        <div className="filter-control">
+          <label htmlFor="association-key">State Association Key:</label>
+          {' '}
+          <select
+            name="association-key"
+            id="association-key"
+            onChange={(e) => setAssociationKey(e.target.value)}
+          >
+            <option value="18bad24aaa">GHSA</option>
+            <option value="542bc38f95">UIL</option>
+          </select>
+        </div>
 
-        <label htmlFor="start-date-filter">Start Date:</label>
-        <DatePicker selected={selectedDate.startDate} onChange={(date) => changeSelectedDate('startDate', date)} />
-        <label htmlFor="end-date-filter">End Date:</label>
-        <DatePicker selected={selectedDate.endDate} onChange={(date) => changeSelectedDate('endDate', date)} />
+        <div className="filter-control">
+          <label htmlFor="start-date-filter">Start Date:</label>
+          {' '}
+          <DatePicker
+            wrapperClassName="date-picker"
+            selected={selectedDate.startDate}
+            onChange={(date) => changeSelectedDate("startDate", date)}
+          />
+        </div>
+        <div className="filter-control">
+          <label htmlFor="end-date-filter">End Date:</label>
+          {' '}
+          <DatePicker
+            wrapperClassName="date-picker"
+            selected={selectedDate.endDate}
+            onChange={(date) => changeSelectedDate("endDate", date)}
+          />
+        </div>
       </section>
       <table className="table">
         <thead className="table-head">

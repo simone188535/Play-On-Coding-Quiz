@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment";
 import "./App.css";
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
         <td>{key}</td>
         <td>{headline}</td>
         <td>{subheadline}</td>
-        <td>{date}</td>
+        <td>{moment(date).format("MMMM Do YYYY h:mm a")}</td>
       </tr>
     )
   );

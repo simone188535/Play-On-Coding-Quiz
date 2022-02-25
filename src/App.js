@@ -82,7 +82,6 @@ function App() {
     </table>
   );
 
-  // read me file
   return (
     <div className="app">
       <section className="filter-controls">

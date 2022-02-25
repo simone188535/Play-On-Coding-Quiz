@@ -17,3 +17,6 @@ You may also see any lint errors in the console.
 ## Important notes!!!!
 
 The provided api: https://challenge.nfhsnetwork.com/v2/search/events/upcoming?state_association_key=18bad24aaa&card=true&size=50&start=0 is returning a CORS error. This is a server side issue with the api (not an issue caused by this react application). This issue appears occasionally and throws an error rather than returning the json.
+
+## Visual
+![Play On Coding Quiz Thumbnail](./public/thumbnail.png)
